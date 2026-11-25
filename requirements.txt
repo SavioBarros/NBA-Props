@@ -1,0 +1,6 @@
+streamlit>=1.51
+requests>=2.32
+pandas>=2.2
+plotly>=6.0
+nba_api>=1.10
+rapidfuzz>=3.14
