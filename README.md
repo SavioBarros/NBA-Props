@@ -4,7 +4,7 @@
 
 Painel em Python para explorar o desempenho de jogadores da NBA e comparar projeções de pontos, rebotes e assistências com linhas de referência. A aplicação combina históricos de partidas e cotações, com uma demonstração offline que abre sem conta ou chave de API.
 
-![Comparação do erro das projeções de pontos no backtest](docs/backtest-pontos.png)
+![Captura do painel NBA Player Performance Analytics no modo demonstração](docs/demo-painel.jpg)
 
 ## Experimente o painel
 
@@ -45,6 +45,8 @@ A primeira linha exercita o fluxo com dados simulados. As duas seguintes reprodu
 O resultado fica em `reports/backtest/`, com previsões, métricas, dados de calibração e um gráfico interativo em `resultado.html`. O notebook [01_backtest.ipynb](notebooks/01_backtest.ipynb) permite inspecionar o mesmo fluxo.
 
 ### Resultado com partidas reais
+
+![Comparação do erro das projeções de pontos no backtest](docs/backtest-pontos.png)
 
 O backtest avaliou **15.815 observações de jogador por partida**, de 374 jogadores, entre 18/11/2025 e 12/04/2026. Cada jogador precisava ter pelo menos 15 jogos anteriores na temporada atual e 15 na anterior. A projeção ponderada atribuiu 65% de peso à forma recente.
 
