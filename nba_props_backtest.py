@@ -10,8 +10,8 @@ import pandas as pd
 from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 
-from nba_history import DEFAULT_DB, load_logs, normalize_logs
-from nba_props_model import estimate_line_probabilities, estimate_weighted_distribution
+from src.data.history import DEFAULT_DB, load_logs, normalize_logs
+from src.models.projection import estimate_line_probabilities, estimate_weighted_distribution
 
 MODEL_LABELS = {"baseline": "Média dos últimos jogos", "model": "Projeção ponderada"}
 
@@ -91,7 +91,7 @@ def plot_report(metrics: pd.DataFrame, calibration: pd.DataFrame, demo: bool = F
 
 
 def demo_history() -> pd.DataFrame:
-    from nba_props_demo import demo_player_logs
+    from src.data.demo import demo_player_logs
 
     return pd.concat([
         games.assign(PLAYER_ID=player_id, SEASON=season)

@@ -7,6 +7,8 @@
 - Modo demonstração sem credenciais, com partidas, jogadores e cotações simulados.
 - Backtest cronológico de pontos, armazenamento SQLite e exportação para CSV e HTML.
 - Testes do modelo, do histórico e do fluxo da demonstração.
+- Organização em camadas e teste de regressão dos limites do rating.
+- Consulta de históricos em lote por temporada, com fonte alternativa e mensagens específicas para falta de dados e filtro de value.
 
 ## Versão inicial
 

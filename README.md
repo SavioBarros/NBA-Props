@@ -30,7 +30,19 @@ A **Demonstração** abre por padrão com jogadores, partidas e cotações simul
 | Histórico | Comparação de janelas L5, L10 e L15, de temporadas e de jogos contra o adversário identificado. |
 | Visualização | Streamlit, Pandas e Plotly, com exportação das tabelas em CSV e JSON. |
 
-A classificação de uma a cinco estrelas combina a diferença para a probabilidade implícita na cotação e a probabilidade estimada pelo modelo. O estado do modelo é reutilizado no detalhe. A cotação mais alta é escolhida por lado, e a referência sem margem é calculada com o par Over/Under da casa correspondente. As cotações têm cache de 5 minutos, os históricos têm cache de 6 horas, e os tempos de coleta e análise aparecem no painel.
+A classificação de uma a cinco estrelas combina a diferença para a probabilidade implícita na cotação e a probabilidade estimada pelo modelo. O estado do modelo é reutilizado no detalhe. A cotação mais alta é escolhida por lado, e a referência sem margem é calculada com o par Over/Under da casa correspondente. As cotações têm cache de 5 minutos, os históricos ao vivo são agrupados por temporada e têm cache de 30 minutos, e os tempos de coleta e análise aparecem no painel.
+
+Se a NBA API estiver indisponível, o painel busca o arquivo público de partidas e informa a data do último registro de cada temporada. O botão de atualização recarrega as cotações e reaproveita os históricos em cache. O filtro **Value mínimo (p.p.)** começa em 5 pontos percentuais. O painel indica separadamente quando faltam históricos para projetar as linhas e quando o filtro elimina as projeções calculadas.
+
+## Estrutura do código
+
+| Caminho | Responsabilidade |
+|---|---|
+| `app/` | Interface Streamlit, filtros, gráficos e exportações. |
+| `src/data/` | Integração com APIs, cache, dados de demonstração e histórico em SQLite. |
+| `src/features/` | Séries históricas, janelas recentes, acertos e confrontos diretos. |
+| `src/models/` | Projeção, probabilidades, comparação de linhas e rating. |
+| `notebooks/` e `tests/` | Análise reproduzível e testes automatizados. |
 
 ## Backtest cronológico de pontos
 
