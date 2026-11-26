@@ -2,6 +2,8 @@
 
 ## Em desenvolvimento
 
+- Backtest comparativo de distribuições discretas e ajustes por minutos, ritmo e defesa.
+
 - Projeção compartilhada entre tabela e detalhe, com tratamento de devoluções em linhas inteiras.
 - Confronto direto filtrado pelo adversário e probabilidade sem margem calculada com as duas cotações da mesma casa.
 - Modo demonstração sem credenciais, com partidas, jogadores e cotações simulados.

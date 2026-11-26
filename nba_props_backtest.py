@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import math
 from collections import defaultdict
+from collections.abc import Mapping
 from pathlib import Path
 
 import pandas as pd
@@ -42,7 +43,7 @@ def backtest_points(frame: pd.DataFrame, window: int = 15, weight: float = 0.65)
                     "player_id": game.PLAYER_ID, "game_id": game.GAME_ID, "date": game.GAME_DATE,
                     "season": game.SEASON, "actual_pts": game.PTS, "benchmark_line": line,
                     "above_line": int(game.PTS > line), "baseline_projection": baseline_mean,
-                    "model_projection": model_mean,
+                    "model_projection": model_mean, "model_sd": model_sd,
                     "baseline_probability": estimate_line_probabilities(line, baseline_mean, baseline_sd)[0],
                     "model_probability": estimate_line_probabilities(line, model_mean, model_sd)[0],
                 })
@@ -53,10 +54,13 @@ def backtest_points(frame: pd.DataFrame, window: int = 15, weight: float = 0.65)
     return pd.DataFrame(predictions).sort_values(["date", "player_id", "game_id"]).reset_index(drop=True)
 
 
-def summarize(predictions: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+def summarize(
+    predictions: pd.DataFrame, labels: Mapping[str, str] | None = None
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Calcula as métricas e agrega a calibração em faixas de probabilidade."""
     metrics = []
     calibration = []
-    for name, label in MODEL_LABELS.items():
+    for name, label in (MODEL_LABELS if labels is None else labels).items():
         error = predictions[f"{name}_projection"] - predictions["actual_pts"]
         probs = predictions[f"{name}_probability"]
         observed = predictions["above_line"]
