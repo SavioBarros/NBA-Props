@@ -71,6 +71,34 @@ O backtest avaliou **15.815 observações de jogador por partida**, de 374 jogad
 
 A média recente teve o menor erro nas três métricas. O MAE da projeção ponderada ficou cerca de 1% acima do baseline. O Brier usa a linha simulada descrita acima. O arquivo histórico registra sete partidas ausentes em 2024–25 e exclui jogadores que não entraram em quadra.
 
+## Experimentos de probabilidade e contexto pré-jogo
+
+A comparação mantém as **15.815 previsões de 374 jogadores** da avaliação de pontos. As linhas são simuladas e as projeções usam apenas partidas em datas anteriores. Poisson e binomial negativa compartilham a média do modelo ponderado. A binomial negativa usa a variância estimada e recorre a Poisson quando a variância é igual ou inferior à média, o que ocorreu em **4 de 15.815 previsões (0,025%)**.
+
+Os ajustes de contexto estimam minutos pela média dos 5 jogos anteriores e combinam essa estimativa com os pontos por minuto dos últimos 15 jogos. O ritmo usa posses estimadas do box score, normalizadas por 48 minutos. A defesa usa os pontos cedidos por 100 posses estimadas. Os indicadores das equipes usam até 10 jogos anteriores e a referência defensiva da liga usa até 10 datas anteriores. As variantes de contexto usam a mesma dispersão do modelo ponderado.
+
+![Resultados dos experimentos com distribuições discretas e contexto pré-jogo](docs/experimentos-fase4.png)
+
+| Método | MAE | RMSE | Brier |
+|---|---:|---:|---:|
+| Média L15 | 4,8095 | 6,2517 | 0,24966 |
+| Ponderada · normal | 4,8588 | 6,2913 | 0,25245 |
+| Ponderada · Poisson | 4,8588 | 6,2913 | 0,26746 |
+| Ponderada · binomial negativa | 4,8588 | 6,2913 | 0,25403 |
+| Minutos esperados | 4,8094 | 6,2631 | 0,24961 |
+| Minutos + ritmo | 4,8071 | 6,2597 | 0,24946 |
+| Minutos + ritmo + defesa | 4,8027 | 6,2569 | 0,24931 |
+
+O modelo com minutos, ritmo e defesa teve o menor MAE e Brier nesta amostra. O ganho em MAE foi de **0,0069 ponto (0,14%)** frente à média L15. A média L15 teve RMSE menor. Entre as distribuições da projeção ponderada, a normal teve o menor Brier. A diferença é pequena e a comparação usa uma única temporada de avaliação.
+
+Consulte o [notebook de experimentos](notebooks/02_experimentos.ipynb) ou rode:
+
+```bash
+python -m src.models.experiments --archive-seasons 2024-25 2025-26 --revision 7339613e45d1bfcb4c98276e764a8b68bea04e30
+```
+
+O comando gera as previsões, as métricas, a curva de calibração e o gráfico interativo em `reports/experimentos/`. Também aceita `--parquet` para executar com os arquivos locais.
+
 ## Testes, Docker e deploy
 
 ```bash
