@@ -4,6 +4,8 @@
 
 Painel em Python para explorar o desempenho de jogadores da NBA e comparar projeções de pontos, rebotes e assistências com linhas de referência. A aplicação combina históricos de partidas e cotações, com uma demonstração offline que abre sem conta ou chave de API.
 
+[**Abrir a demonstração no Streamlit**](https://nba-props-analytics.streamlit.app/)
+
 ![Captura do painel NBA Player Performance Analytics no modo demonstração](docs/demo-painel.jpg)
 
 ## Experimente o painel
