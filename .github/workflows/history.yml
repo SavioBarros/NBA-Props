@@ -1,1 +1,32 @@
+name: Atualizar histórico da NBA
+on:
+  schedule:
+    - cron: '17 13 * * 1'
+  workflow_dispatch:
 
+permissions:
+  contents: read
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Baixar o arquivo público e rodar backtest
+        shell: bash
+        run: |
+          mapfile -t seasons < <(python -c 'from datetime import datetime, timezone; d = datetime.now(timezone.utc); y = d.year - int(d.month < 10); print(f"{y-2}-{(y-1) % 100:02d}"); print(f"{y-1}-{y % 100:02d}"); print(f"{y}-{(y+1) % 100:02d}")')
+          python -m nba_history --archive-seasons "${seasons[@]}"
+          python -m nba_props_backtest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nba-backtest
+          path: reports/backtest/
+          retention-days: 14
+          if-no-files-found: error
