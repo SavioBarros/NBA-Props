@@ -3,8 +3,14 @@ import unittest
 
 import pandas as pd
 
-from nba_props_data import dedupe_props, head_to_head_games, no_vig_prob_over
-from nba_props_model import estimate_line_probabilities, estimate_weighted_distribution, line_result_counts, side_hit_rate
+from src.data.sources import dedupe_props
+from src.features.player_form import head_to_head_games, line_result_counts, side_hit_rate
+from src.models.projection import (
+    compute_star_rating,
+    estimate_line_probabilities,
+    estimate_weighted_distribution,
+    no_vig_prob_over,
+)
 
 
 class ModelTests(unittest.TestCase):
@@ -45,3 +51,13 @@ class ModelTests(unittest.TestCase):
         past = pd.DataFrame({"GAME_DATE": pd.to_datetime(["2024-10-31"]), "MATCHUP": ["MIA vs. LAL"]})
         games = head_to_head_games(current, past, "Boston Celtics", "Los Angeles Lakers")
         self.assertEqual(games["MATCHUP"].tolist(), ["MIA vs. LAL", "BOS @ LAL"])
+
+    def test_rating_boundaries_and_probability_bonus(self):
+        cases = [(7.40, 1), (7.41, 2), (11.85, 2), (11.86, 3),
+                 (16.29, 3), (16.30, 4), (20.74, 4), (20.75, 5)]
+        for edge, expected in cases:
+            with self.subTest(edge=edge):
+                self.assertEqual(compute_star_rating(edge, 52), expected)
+        self.assertEqual(compute_star_rating(5, 52), 1)
+        self.assertEqual(compute_star_rating(5, 60), 2)
+        self.assertEqual(compute_star_rating(-4, 80), compute_star_rating(0, 80))
