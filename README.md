@@ -1,6 +1,6 @@
-# NBA Props Analyzer (versão otimizada)
+# NBA Props Analyzer 
 
-## Como rodar
+## Como rodar ?
 1. Crie um ambiente virtual novo.
 2. Instale as dependências:
    ```bash
@@ -13,11 +13,8 @@
    streamlit run streamlit_app.py
    ```
 
-## O que mudou
+## Mudanças
 - Visão **Prop Bet Cheat Sheet** (tabela principal estilo BettingPros).
 - **Rating 1–5 estrelas**, projeção vs linha, L5/L10 e filtros por jogo/lado/cover prob.
 - Visões **Cheat Sheet**, **Top picks** e **Por jogo**.
 
-## Observação importante
-A chave da Odds API não deve ser versionada. Use `.streamlit/secrets.toml` localmente
-ou configure `ODDS_API_KEY` como segredo no provedor de deploy.
